@@ -1,0 +1,754 @@
+<!-- CHECKLIST SEO + GEO | Cole todo este bloco em um widget HTML do Elementor -->
+<section class="sg-checklist" id="sg-checklist">
+  <style>
+    .sg-checklist {
+      --sg-primary: #0a4984;
+      --sg-primary-dark: #06345f;
+      --sg-accent: #c8a160;
+      --sg-bg: #f5f7fa;
+      --sg-card: #ffffff;
+      --sg-text: #17212b;
+      --sg-muted: #5c6875;
+      --sg-border: #dfe5eb;
+      --sg-success: #1f8a5b;
+      color: var(--sg-text);
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 1.65;
+      width: 100%;
+    }
+    .sg-checklist * { box-sizing: border-box; }
+    .sg-checklist__inner { max-width: 1100px; margin: 0 auto; }
+    .sg-checklist__hero {
+      background: linear-gradient(135deg, var(--sg-primary-dark), var(--sg-primary));
+      border-radius: 24px;
+      color: #fff;
+      padding: clamp(28px, 5vw, 56px);
+      margin-bottom: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sg-checklist__hero::after {
+      background: var(--sg-accent);
+      border-radius: 999px;
+      content: "";
+      height: 180px;
+      opacity: .18;
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 180px;
+    }
+    .sg-checklist__eyebrow {
+      color: #f2d59e;
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .sg-checklist h1,
+    .sg-checklist h2,
+    .sg-checklist h3,
+    .sg-checklist h4 { color: inherit; font-family: inherit; line-height: 1.2; margin: 0; }
+    .sg-checklist h1 { font-size: clamp(30px, 5vw, 52px); margin-bottom: 14px; }
+    .sg-checklist__hero p { margin: 0; max-width: 760px; opacity: .92; }
+    .sg-checklist__progress-card {
+      background: var(--sg-card);
+      border: 1px solid var(--sg-border);
+      border-radius: 18px;
+      box-shadow: 0 12px 32px rgba(14, 31, 48, .08);
+      margin-bottom: 24px;
+      padding: 20px;
+      position: sticky;
+      top: 16px;
+      z-index: 20;
+    }
+    .sg-checklist__progress-top { align-items: center; display: flex; gap: 16px; justify-content: space-between; margin-bottom: 10px; }
+    .sg-checklist__progress-title { font-size: 15px; font-weight: 800; }
+    .sg-checklist__progress-number { color: var(--sg-primary); font-size: 15px; font-weight: 800; white-space: nowrap; }
+    .sg-checklist__track { background: #e9edf1; border-radius: 999px; height: 10px; overflow: hidden; }
+    .sg-checklist__bar { background: linear-gradient(90deg, var(--sg-accent), var(--sg-primary)); border-radius: inherit; height: 100%; transition: width .25s ease; width: 0; }
+    .sg-checklist__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .sg-checklist__button {
+      align-items: center;
+      background: var(--sg-primary);
+      border: 1px solid var(--sg-primary);
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 14px;
+    }
+    .sg-checklist__button--secondary { background: #fff; color: var(--sg-primary); }
+    .sg-checklist__button:hover { filter: brightness(.94); }
+    .sg-checklist__intro,
+    .sg-checklist__summary {
+      background: var(--sg-bg);
+      border: 1px solid var(--sg-border);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      padding: 20px;
+    }
+    .sg-checklist__intro p,
+    .sg-checklist__summary p { margin: 0; }
+    .sg-checklist__steps { display: grid; gap: 16px; }
+    .sg-step {
+      background: var(--sg-card);
+      border: 1px solid var(--sg-border);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(14, 31, 48, .05);
+      overflow: hidden;
+    }
+    .sg-step[open] { border-color: rgba(10, 73, 132, .45); }
+    .sg-step > summary {
+      align-items: center;
+      cursor: pointer;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 46px 1fr auto;
+      list-style: none;
+      padding: 20px;
+    }
+    .sg-step > summary::-webkit-details-marker { display: none; }
+    .sg-step__number {
+      align-items: center;
+      background: var(--sg-primary);
+      border-radius: 12px;
+      color: #fff;
+      display: flex;
+      font-size: 15px;
+      font-weight: 850;
+      height: 46px;
+      justify-content: center;
+      width: 46px;
+    }
+    .sg-step__heading h2 { font-size: clamp(18px, 2.4vw, 24px); margin-bottom: 4px; }
+    .sg-step__heading p { color: var(--sg-muted); font-size: 14px; margin: 0; }
+    .sg-step__icon { color: var(--sg-primary); font-size: 22px; font-weight: 900; transition: transform .2s ease; }
+    .sg-step[open] .sg-step__icon { transform: rotate(45deg); }
+    .sg-step__content { border-top: 1px solid var(--sg-border); padding: 24px; }
+    .sg-step__content h3 { color: var(--sg-primary-dark); font-size: 18px; margin: 24px 0 12px; }
+    .sg-step__content h3:first-child { margin-top: 0; }
+    .sg-step__content h4 { font-size: 15px; margin: 18px 0 8px; }
+    .sg-tasks { display: grid; gap: 8px; margin: 0; }
+    .sg-task {
+      align-items: flex-start;
+      background: #fbfcfd;
+      border: 1px solid #edf0f3;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      gap: 11px;
+      padding: 10px 12px;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .sg-task:hover { border-color: rgba(10, 73, 132, .35); }
+    .sg-task input {
+      accent-color: var(--sg-success);
+      flex: 0 0 auto;
+      height: 18px;
+      margin: 3px 0 0;
+      width: 18px;
+    }
+    .sg-task:has(input:checked) { background: #effaf4; border-color: #b9dfcc; }
+    .sg-task:has(input:checked) span { color: #466155; text-decoration: line-through; }
+    .sg-example {
+      background: #f2f7fc;
+      border-left: 4px solid var(--sg-primary);
+      border-radius: 0 12px 12px 0;
+      margin-top: 24px;
+      padding: 18px;
+    }
+    .sg-example h3 { margin: 0 0 12px; }
+    .sg-example p { margin: 8px 0 0; }
+    .sg-example ul,
+    .sg-example ol { margin: 10px 0 0; padding-left: 22px; }
+    .sg-example li + li { margin-top: 5px; }
+    .sg-good,
+    .sg-bad { border-radius: 10px; margin-top: 10px; padding: 12px 14px; }
+    .sg-good { background: #eef9f3; border: 1px solid #bee2cd; }
+    .sg-bad { background: #fff3f2; border: 1px solid #f0c4bf; }
+    .sg-code {
+      background: #101820;
+      border-radius: 12px;
+      color: #d9e6ef;
+      display: block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      margin-top: 12px;
+      overflow-x: auto;
+      padding: 16px;
+      white-space: pre;
+    }
+    .sg-table-wrap { margin-top: 14px; overflow-x: auto; }
+    .sg-table { border-collapse: collapse; min-width: 620px; width: 100%; }
+    .sg-table th,
+    .sg-table td { border: 1px solid var(--sg-border); padding: 11px 12px; text-align: left; vertical-align: top; }
+    .sg-table th { background: var(--sg-primary-dark); color: #fff; font-size: 13px; }
+    .sg-table td { background: #fff; }
+    .sg-status { color: var(--sg-muted); font-size: 13px; }
+    .sg-checklist__footer { color: var(--sg-muted); font-size: 13px; margin-top: 20px; text-align: center; }
+    @media (max-width: 767px) {
+      .sg-checklist { font-size: 15px; }
+      .sg-checklist__progress-card { position: static; }
+      .sg-step > summary { grid-template-columns: 40px 1fr auto; padding: 16px; }
+      .sg-step__number { border-radius: 10px; height: 40px; width: 40px; }
+      .sg-step__content { padding: 18px 16px; }
+      .sg-checklist__actions { display: grid; grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      .sg-checklist__progress-card { position: static; }
+      .sg-checklist__actions { display: none; }
+      .sg-step { break-inside: avoid; }
+      .sg-step > .sg-step__content { display: block !important; }
+    }
+  </style>
+
+  <div class="sg-checklist__inner">
+    <header class="sg-checklist__hero">
+      <span class="sg-checklist__eyebrow">Guia prático</span>
+      <h1>Checklist completo de SEO + GEO</h1>
+      <p>Um processo em 13 etapas para melhorar rastreamento, posicionamento, autoridade e presença do site nas respostas de mecanismos generativos.</p>
+    </header>
+
+    <div class="sg-checklist__progress-card" aria-live="polite">
+      <div class="sg-checklist__progress-top">
+        <span class="sg-checklist__progress-title">Progresso do projeto</span>
+        <span class="sg-checklist__progress-number"><strong data-sg-done>0</strong> de <strong data-sg-total>0</strong> itens — <strong data-sg-percent>0%</strong></span>
+      </div>
+      <div class="sg-checklist__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="sg-checklist__bar" data-sg-bar></div>
+      </div>
+      <div class="sg-checklist__actions">
+        <button class="sg-checklist__button" type="button" data-sg-open>Abrir todas</button>
+        <button class="sg-checklist__button sg-checklist__button--secondary" type="button" data-sg-close>Fechar todas</button>
+        <button class="sg-checklist__button sg-checklist__button--secondary" type="button" data-sg-print>Imprimir checklist</button>
+        <button class="sg-checklist__button sg-checklist__button--secondary" type="button" data-sg-reset>Limpar progresso</button>
+      </div>
+    </div>
+
+    <div class="sg-checklist__intro">
+      <p><strong>Como usar:</strong> abra cada etapa, marque os itens realizados e consulte o exemplo prático. O progresso fica salvo neste navegador. Os exemplos usam a empresa fictícia <strong>Alfa Web</strong>, especializada em criação de sites WordPress.</p>
+    </div>
+
+    <div class="sg-checklist__steps">
+
+      <details class="sg-step" open>
+        <summary>
+          <span class="sg-step__number">01</span>
+          <span class="sg-step__heading"><h2>Diagnóstico inicial</h2><p>Entenda a situação atual antes de fazer alterações.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Rastreamento e indexação</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Verificar quantas páginas estão indexadas no Google.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Comparar páginas indexadas com as páginas reais do site.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Identificar páginas importantes não indexadas e páginas desnecessárias indexadas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Verificar erros de rastreamento, bloqueios no robots.txt e páginas com noindex.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Conferir se o sitemap XML existe e está atualizado.</span></label>
+          </div>
+          <h3>Conteúdo, desempenho e autoridade</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Listar todas as páginas e encontrar conteúdos fracos, duplicados ou desatualizados.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Identificar páginas sem title, meta description, CTA ou resposta para dúvidas importantes.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar PageSpeed no mobile e desktop e registrar LCP, INP e CLS.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Verificar imagens pesadas, scripts, plugins e tempo de resposta da hospedagem.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Analisar backlinks, avaliações, menções à marca e presença em respostas de IA.</span></label>
+          </div>
+          <h3>Conversões</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Confirmar instalação do Google Analytics e do Search Console.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Configurar cliques no WhatsApp, telefone, e-mail e envios de formulário.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Registrar tráfego, posições e conversões atuais para comparação futura.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p>A Alfa Web encontrou 48 URLs indexadas, mas apenas 16 eram relevantes. Havia 12 modelos antigos do Elementor no índice, uma imagem principal de 2,8 MB, uma página de serviço sem title exclusivo, nenhum case publicado e o WhatsApp não era medido.</p>
+            <p><strong>Decisão:</strong> remover URLs irrelevantes do índice, otimizar as páginas comerciais, comprimir imagens, publicar cases e configurar conversões.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">02</span>
+          <span class="sg-step__heading"><h2>Público e conversões</h2><p>Defina quem deve chegar ao site e qual ação deverá realizar.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Cliente ideal</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Definir segmento, localização, porte e faixa de investimento do cliente ideal.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Mapear necessidades, problemas, desejos e objeções.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Identificar quem toma a decisão e o que essa pessoa pesquisa.</span></label>
+          </div>
+          <h3>Objetivos</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Definir o objetivo principal e os objetivos secundários do site.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Definir conversão principal, microconversões e CTA de cada página.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Determinar como cada conversão será mensurada.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p><strong>Público:</strong> pequenas e médias empresas brasileiras com site antigo ou inexistente, orçamento entre R$ 5 mil e R$ 15 mil e decisão tomada pelo proprietário ou gestor de marketing.</p>
+            <p><strong>Conversão principal:</strong> solicitação de diagnóstico pelo WhatsApp.</p>
+            <p><strong>Microconversões:</strong> visualizar um case, clicar em “Ver projetos”, preencher um formulário ou baixar a apresentação.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">03</span>
+          <span class="sg-step__heading"><h2>Palavras-chave, perguntas e entidades</h2><p>Descubra como o público pesquisa e quais temas devem ser abordados.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Pesquisa</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Definir uma palavra-chave principal para cada página.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Pesquisar sinônimos e variações comerciais, informativas, locais, comparativas e relacionadas a preço.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Avaliar intenção de busca, volume, concorrência e potencial comercial.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Levantar dúvidas de clientes, sugestões do Google e perguntas exibidas em “As pessoas também perguntam”.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar perguntas no ChatGPT, Gemini e Perplexity e observar as fontes citadas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Listar entidades relacionadas: empresas, profissionais, serviços, ferramentas, tecnologias, cidades e conceitos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Agrupar termos com a mesma intenção e atribuir cada grupo a uma URL.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <div class="sg-table-wrap"><table class="sg-table"><thead><tr><th>Categoria</th><th>Exemplo</th><th>Página indicada</th></tr></thead><tbody>
+              <tr><td>Principal</td><td>Criação de sites</td><td>/criacao-de-sites/</td></tr>
+              <tr><td>Específica</td><td>Criação de sites WordPress</td><td>/criacao-de-sites-wordpress/</td></tr>
+              <tr><td>Preço</td><td>Quanto custa criar um site?</td><td>/blog/quanto-custa-um-site/</td></tr>
+              <tr><td>Comparação</td><td>WordPress ou Wix?</td><td>/blog/wordpress-ou-wix/</td></tr>
+              <tr><td>GEO</td><td>Qual empresa cria sites profissionais?</td><td>Serviço + cases + página Sobre</td></tr>
+            </tbody></table></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">04</span>
+          <span class="sg-step__heading"><h2>Arquitetura do site</h2><p>Organize páginas e relações temáticas de forma lógica.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Criar Home, Sobre, Contato e páginas institucionais obrigatórias.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar uma página própria para cada serviço importante.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar páginas de segmentos e localidades somente quando houver conteúdo e atuação reais.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar áreas de cases, perguntas frequentes e conteúdo educativo.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Organizar páginas em grupos temáticos e usar URLs curtas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Evitar páginas órfãs e manter páginas importantes a poucos cliques da Home.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Planejar breadcrumbs e links internos entre artigos, serviços e cases.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <code class="sg-code">/
+├── sobre/
+├── servicos/
+│   ├── criacao-de-sites/
+│   ├── landing-pages/
+│   ├── lojas-virtuais/
+│   └── manutencao-wordpress/
+├── segmentos/
+│   ├── sites-para-advogados/
+│   └── sites-para-clinicas/
+├── cases/
+├── blog/
+└── contato/</code>
+            <p>O artigo “Quanto custa um site?” aponta para a página de criação de sites. Essa página aponta para um case e termina com um CTA de orçamento.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">05</span>
+          <span class="sg-step__heading"><h2>Otimização de cada página</h2><p>Alinhe cada URL a uma intenção específica.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Elementos essenciais</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Criar URL curta, descritiva e relacionada ao tema principal.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar title SEO exclusivo com tema, benefício ou diferencial.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar meta description exclusiva, clara e persuasiva.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Utilizar um único H1 e organizar seções com H2 e H3.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Responder à intenção de busca logo na introdução.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Explicar serviço, benefícios, processo, diferenciais e objeções.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Adicionar cases, perguntas frequentes, links internos e CTA.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Comprimir imagens, definir dimensões e escrever textos alternativos úteis.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p><strong>URL:</strong> alfaweb.com.br/criacao-de-sites/</p>
+            <p><strong>Title:</strong> Criação de Sites WordPress para Empresas | Alfa Web</p>
+            <p><strong>Meta description:</strong> Criação de sites WordPress rápidos, responsivos e preparados para gerar oportunidades. Conheça projetos e solicite um diagnóstico.</p>
+            <p><strong>H1:</strong> Criação de sites profissionais para empresas</p>
+            <p><strong>Introdução:</strong> Desenvolvemos sites WordPress responsivos, rápidos e planejados para transformar visitantes em oportunidades comerciais.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">06</span>
+          <span class="sg-step__heading"><h2>Conteúdo preparado para GEO</h2><p>Facilite compreensão, extração e citação por mecanismos generativos.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Usar perguntas reais como subtítulos e responder diretamente no início da seção.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar definições curtas, processos em etapas e comparações em tabelas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Incluir números, datas, contexto e fontes confiáveis.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Deixar claro quando uma informação é fato, opinião ou estimativa.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Adicionar experiências próprias, cases e exemplos verificáveis.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Identificar autor, revisor, data de publicação e atualização.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Manter informações importantes em texto HTML, não somente em imagens ou vídeos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar seções que sejam compreensíveis mesmo quando lidas isoladamente.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Revisar e atualizar conteúdos periodicamente.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <div class="sg-bad"><strong>Fraco:</strong> “Criamos projetos incríveis com os melhores preços e resultados extraordinários.”</div>
+            <div class="sg-good"><strong>Otimizado:</strong> “Um site institucional em WordPress costuma levar entre 30 e 60 dias para ser desenvolvido. O prazo depende do número de páginas, das funcionalidades e da disponibilidade do conteúdo. O processo é dividido em diagnóstico, arquitetura, design, desenvolvimento, testes e publicação.”</div>
+            <p>A segunda versão responde diretamente, informa fatores e apresenta um processo compreensível e citável.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">07</span>
+          <span class="sg-step__heading"><h2>Experiência e autoridade</h2><p>Comprove que a empresa e os autores são fontes confiáveis.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Empresa e profissionais</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Criar uma página Sobre com história, experiência, equipe e especialidades.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Exibir canais de contato, endereço e CNPJ quando aplicável.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Identificar autores, criar biografias e informar experiência relevante.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Manter dados da empresa consistentes em todos os canais.</span></label>
+          </div>
+          <h3>Cases e depoimentos</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Publicar cases com problema, solução, processo e resultados mensuráveis.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Adicionar evidências e identificar clientes quando houver autorização.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Utilizar depoimentos reais com nome, empresa e contexto.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Evitar números, avaliações e resultados que não possam ser comprovados.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <div class="sg-bad"><strong>Fraco:</strong> “Somos a melhor empresa de criação de sites do Brasil.”</div>
+            <div class="sg-good"><strong>Comprovável:</strong> “Thiago Matos atua há 13 anos com web design e UX/UI. Seus projetos são desenvolvidos principalmente em WordPress e Elementor, com foco em experiência, performance e geração de oportunidades.”</div>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">08</span>
+          <span class="sg-step__heading"><h2>Dados estruturados</h2><p>Ajude mecanismos de busca a identificar o significado das informações.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Identificar o tipo de Schema apropriado para cada página.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Implementar JSON-LD para Organization ou LocalBusiness e WebSite.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Usar BreadcrumbList, Service, Article, Person, Product ou VideoObject quando apropriado.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Garantir que os dados estruturados correspondam ao conteúdo visível.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Não incluir avaliações, serviços ou propriedades inexistentes.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Validar no Rich Results Test e corrigir erros críticos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Monitorar relatórios de melhorias no Search Console.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático: Organization</h3>
+            <code class="sg-code">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Alfa Web",
+  "url": "https://alfaweb.com.br/",
+  "logo": "https://alfaweb.com.br/logo.png",
+  "description": "Empresa especializada em criação de sites WordPress.",
+  "founder": {
+    "@type": "Person",
+    "name": "Thiago Matos"
+  }
+}
+&lt;/script&gt;</code>
+            <p>Substitua todos os dados fictícios pelas informações reais da empresa.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">09</span>
+          <span class="sg-step__heading"><h2>SEO técnico</h2><p>Garanta rastreamento, interpretação e indexação corretos.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Rastreamento e indexação</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Revisar robots.txt e permitir acesso às páginas públicas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Remover noindex de páginas importantes e aplicar noindex somente onde fizer sentido.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Configurar canonicals e corrigir conteúdo duplicado.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Garantir que o sitemap contenha apenas URLs canônicas e indexáveis.</span></label>
+          </div>
+          <h3>URLs, segurança e compatibilidade</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Corrigir links quebrados e erros 404 relevantes.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Criar redirecionamentos 301 sem cadeias ou loops.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Atualizar links internos depois de mudanças de URL.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Utilizar HTTPS e redirecionar HTTP para HTTPS.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar mobile, navegadores, formulários e acessibilidade básica.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <code class="sg-code">URL antiga:
+/site-profissional-antigo/
+
+Redirecionamento 301:
+/site-profissional-antigo/ → /criacao-de-sites/
+
+Nova URL:
+/criacao-de-sites/ → Status 200
+Canonical → /criacao-de-sites/</code>
+            <p>A nova URL deve estar no sitemap, receber os links internos e possuir canonical apontando para ela mesma.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">10</span>
+          <span class="sg-step__heading"><h2>Desempenho e experiência</h2><p>Melhore velocidade, estabilidade visual e interação.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Core Web Vitals</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Buscar LCP de até 2,5 segundos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Buscar INP abaixo de 200 milissegundos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Buscar CLS abaixo de 0,1.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Conferir dados reais do Search Console e testar páginas individualmente.</span></label>
+          </div>
+          <h3>WordPress e Elementor</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Redimensionar, comprimir e converter imagens para WebP ou AVIF.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Definir dimensões das imagens e configurar lazy load corretamente.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Remover plugins, containers, widgets e animações desnecessários.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Reduzir scripts de terceiros, fontes e pesos tipográficos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Ativar cache, compressão e CDN quando apropriado.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Usar hospedagem adequada e manter WordPress, tema e plugins atualizados.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar menu, formulários, pop-ups e integrações depois das otimizações.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p><strong>Antes:</strong> imagem principal de 2,8 MB, LCP de 5,4 s, vídeo em autoplay, três fontes externas e oito plugins sem uso.</p>
+            <p><strong>Ajustes:</strong> imagem WebP de 180 KB, thumbnail no lugar do vídeo, menos fontes, remoção de plugins e cache ativo.</p>
+            <p><strong>Depois:</strong> LCP de 2,2 s, layout mais estável e menor consumo de recursos no mobile.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">11</span>
+          <span class="sg-step__heading"><h2>Acesso dos mecanismos de IA</h2><p>Evite bloqueios acidentais aos rastreadores desejados.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Revisar o robots.txt e o acesso de Googlebot, Bingbot e OAI-SearchBot.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Decidir separadamente se o GPTBot será permitido ou bloqueado.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Verificar bloqueios no CDN, firewall e hospedagem.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Confirmar status 200 e ausência de noindex nas páginas públicas importantes.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Manter conteúdo essencial em HTML e acessível sem login ou interação obrigatória.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Registrar referências vindas de mecanismos generativos no Analytics.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático de robots.txt</h3>
+            <p>Permitir que páginas possam aparecer na pesquisa do ChatGPT, bloqueando separadamente o crawler de treinamento:</p>
+            <code class="sg-code">User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://alfaweb.com.br/sitemap_index.xml</code>
+            <p>Confirme o endereço real do sitemap e revise essa decisão conforme a política da empresa.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">12</span>
+          <span class="sg-step__heading"><h2>Autoridade externa</h2><p>Construa referências relevantes fora do próprio site.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Marca, backlinks e avaliações</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Criar ou atualizar Google Business Profile e perfis profissionais.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Padronizar nome, endereço, telefone e descrição da empresa.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Conseguir links de parceiros, clientes e sites relevantes ao segmento.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Publicar cases em parceria, entrevistas, artigos e materiais originais.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Monitorar menções à marca e solicitar links quando apropriado.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Solicitar avaliações de clientes reais e responder aos comentários.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Evitar compra de backlinks e diretórios genéricos de baixa qualidade.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p>Depois de concluir o site de uma clínica, a Alfa Web publica um case, solicita um depoimento autorizado e propõe que a clínica inclua um link contextual: <strong>“Site desenvolvido pela Alfa Web”</strong>.</p>
+            <p>Esse vínculo real entre cliente, projeto e fornecedor é mais relevante do que centenas de cadastros automáticos em diretórios sem relação com o serviço.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="sg-step">
+        <summary>
+          <span class="sg-step__number">13</span>
+          <span class="sg-step__heading"><h2>Indexação e validação final</h2><p>Confirme se a publicação funciona e pode ser encontrada.</p></span>
+          <span class="sg-step__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="sg-step__content">
+          <h3>Antes de publicar</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Fazer backup e testar em ambiente de homologação.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Revisar textos, links, formulários, mobile e desktop.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Validar titles, descriptions, canonicals, Schema e redirecionamentos.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Confirmar ausência de noindex acidental.</span></label>
+          </div>
+          <h3>Depois de publicar</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Limpar cache e confirmar HTTPS e status 200.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Atualizar e enviar o sitemap ao Google e ao Bing.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Inspecionar URLs prioritárias e solicitar indexação.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar robots.txt, dados estruturados e PageSpeed.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar formulários, CTAs e eventos do Analytics.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Monitorar erros nos primeiros dias após a publicação.</span></label>
+          </div>
+          <h3>Validação posterior</h3>
+          <div class="sg-tasks">
+            <label class="sg-task"><input type="checkbox"><span>Conferir indexação, impressões, cliques e consultas encontradas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Verificar páginas excluídas e erros de rastreamento.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Comparar conversões antes e depois.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Testar novamente perguntas em mecanismos de IA e analisar as fontes citadas.</span></label>
+            <label class="sg-task"><input type="checkbox"><span>Atualizar o conteúdo com base nos resultados.</span></label>
+          </div>
+          <div class="sg-example">
+            <h3>Exemplo prático</h3>
+            <p>Depois de publicar <strong>/criacao-de-sites/</strong>, confirme status 200, canonical autorreferente, presença no sitemap, ausência de noindex, funcionamento do formulário e registro da conversão no Analytics.</p>
+            <p>Em seguida, inspecione a URL no Search Console, solicite indexação e monitore impressões, consultas e conversões nas semanas seguintes.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="sg-checklist__summary" style="margin-top:24px">
+      <h2 style="font-size:22px;margin-bottom:14px">Controle geral do projeto</h2>
+      <div class="sg-table-wrap"><table class="sg-table"><thead><tr><th>Etapa</th><th>Prioridade</th><th>Status recomendado</th></tr></thead><tbody>
+        <tr><td>Diagnóstico inicial</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Público e conversões</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Palavras-chave, perguntas e entidades</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Arquitetura</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Otimização das páginas</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Conteúdo para GEO</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Experiência e autoridade</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Dados estruturados</td><td>Média/alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>SEO técnico</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Performance</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Acesso dos mecanismos de IA</td><td>Média/alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Autoridade externa</td><td>Contínua</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+        <tr><td>Indexação e validação</td><td>Alta</td><td class="sg-status">Pendente / Em andamento / Concluído</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:16px"><strong>Ordem recomendada:</strong> diagnóstico, público, pesquisa, arquitetura e SEO técnico; depois páginas comerciais, GEO, autoridade, Schema e performance; por fim, indexação e validação. Conteúdo, autoridade externa e monitoramento devem continuar mensalmente.</p>
+    </div>
+
+    <p class="sg-checklist__footer">Checklist SEO + GEO — adapte os exemplos, URLs e dados para a realidade de cada projeto.</p>
+  </div>
+
+  <script>
+    (function () {
+      const root = document.getElementById('sg-checklist');
+      if (!root || root.dataset.ready === 'true') return;
+      root.dataset.ready = 'true';
+
+      const checks = Array.from(root.querySelectorAll('.sg-task input[type="checkbox"]'));
+      const steps = Array.from(root.querySelectorAll('.sg-step'));
+      const storageKey = 'sg-checklist-seo-geo-v1';
+      const doneEl = root.querySelector('[data-sg-done]');
+      const totalEl = root.querySelector('[data-sg-total]');
+      const percentEl = root.querySelector('[data-sg-percent]');
+      const bar = root.querySelector('[data-sg-bar]');
+      const track = root.querySelector('[role="progressbar"]');
+
+      checks.forEach(function (check, index) {
+        check.dataset.sgId = 'item-' + (index + 1);
+      });
+
+      function readSaved() {
+        try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); }
+        catch (error) { return {}; }
+      }
+
+      function update() {
+        const state = {};
+        let done = 0;
+        checks.forEach(function (check) {
+          state[check.dataset.sgId] = check.checked;
+          if (check.checked) done += 1;
+        });
+        const percent = checks.length ? Math.round((done / checks.length) * 100) : 0;
+        doneEl.textContent = done;
+        totalEl.textContent = checks.length;
+        percentEl.textContent = percent + '%';
+        bar.style.width = percent + '%';
+        track.setAttribute('aria-valuenow', String(percent));
+        try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch (error) {}
+      }
+
+      const saved = readSaved();
+      checks.forEach(function (check) {
+        check.checked = Boolean(saved[check.dataset.sgId]);
+        check.addEventListener('change', update);
+      });
+
+      root.querySelector('[data-sg-open]').addEventListener('click', function () {
+        steps.forEach(function (step) { step.open = true; });
+      });
+      root.querySelector('[data-sg-close]').addEventListener('click', function () {
+        steps.forEach(function (step) { step.open = false; });
+      });
+      root.querySelector('[data-sg-print]').addEventListener('click', function () {
+        steps.forEach(function (step) { step.open = true; });
+        window.print();
+      });
+      root.querySelector('[data-sg-reset]').addEventListener('click', function () {
+        if (!window.confirm('Deseja realmente limpar todo o progresso deste checklist?')) return;
+        checks.forEach(function (check) { check.checked = false; });
+        try { localStorage.removeItem(storageKey); } catch (error) {}
+        update();
+      });
+
+      update();
+    })();
+  </script>
+</section>
